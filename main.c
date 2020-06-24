@@ -5,9 +5,9 @@
 #include <pty.h>
 #include <pthread.h>
 #include <termios.h>
-#include <signal.h>
 #include <sys/types.h>
 #include "sighandl.h"
+#include "client.h"
 
 #define BUFFSIZE 1024
 
@@ -19,10 +19,10 @@ int main(int argc, char** argv)
 {
     char   ptyname[20];
     pid_t  pid;
-    int    fdm;
+    int    fdm, sockfd;
     struct winsize size;
     struct termios tcattr;
-
+    sockfd = client("127.0.0.1", 8000);
     pid = forkpty(&fdm, ptyname, NULL, NULL);
 
     if (pid == 0) {             /* child */
